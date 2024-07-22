@@ -3,4 +3,7 @@ langchain-anthropic
 langchain-openai
 langchain_community
 langchain_chroma
+langchain_experimental
+langchainhub
 pypdf
+PyPDF2
