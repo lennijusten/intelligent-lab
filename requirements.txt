@@ -7,3 +7,5 @@ langchain_experimental
 langchainhub
 pypdf
 PyPDF2
+bs4
+faiss-cpu
