@@ -1,0 +1,38 @@
+{
+    "robot_type": "OT-2",
+    "api_version": "2.17",
+    "pipettes": {
+      "left": {
+        "type": "p300_single_gen2",
+        "tip_racks": ["1"]
+      },
+      "right": {
+        "type": "p20_multi_gen2",
+        "tip_racks": ["2"]
+      }
+    },
+    "modules": {
+      "thermocycler": {
+        "type": "thermocyclerModuleV2",
+        "location": ["7"]
+      }
+    },
+    "labware": {
+      "1": {
+        "type": "opentrons_96_tiprack_300ul"
+      },
+      "2": {
+        "type": "opentrons_96_tiprack_20ul"
+      },
+      "3": {
+        "type": "corning_96_wellplate_360ul_flat"
+      },
+      "5": {
+        "type": "nest_12_reservoir_15ml"
+      },
+      "7": {
+        "type": "nest_96_wellplate_100ul_pcr_full_skirt",
+        "parent_module": "thermocycler"
+      }
+    }
+  }
