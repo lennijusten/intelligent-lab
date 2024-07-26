@@ -5,6 +5,7 @@ langchain_community
 langchain_chroma
 langchain_experimental
 langchainhub
+langgraph
 pypdf
 PyPDF2
 bs4
