@@ -1,0 +1,13 @@
+{
+    "pipettes": {
+        "left": "p300_single",
+        "right": "p10_single"
+    },
+    "labware": {
+    },
+    "tip_racks": {
+    },
+    "modules": {
+        "7": "thermocyclerModuleV2"
+    }
+}
