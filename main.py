@@ -2,11 +2,9 @@ import argparse
 import json
 import uuid
 from dotenv import load_dotenv
-import os
 
 from src.agent.graph import create_graph
-from src.agent.state import AgentState
-from src.agent.prompts import initial_processing_prompt, get_info_prompt, code_gen_prompt
+from src.agent.prompts import initial_processing_template
 from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.checkpoint.sqlite import SqliteSaver
 
@@ -37,16 +35,16 @@ def main():
 
     while True:
         print("\nAI: Hello! I'm an intelligent liquid handling assistant. How can I help you today?\n")
-        user = input("User (q/Q to quit): ")
-        if user.lower() == 'q':
+        user_input = input("User (q/Q to quit): ")
+        if user_input.lower() == 'q':
             print("AI: Goodbye!")
             break
 
         initial_state = {
-            "messages": [HumanMessage(content=user + config_prompt)],
+            "messages": [SystemMessage(initial_processing_template), HumanMessage(user_input + config_prompt)],
             "default_config": default_config,
-            "processed_command": "",
             "awaiting_human_input": False,
+            "get_info_calls": 0,
             "current_code": "",
             "code_to_run": ""
         }

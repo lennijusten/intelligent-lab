@@ -113,9 +113,7 @@ Remember, output ONLY the questions or the tool use instruction, without any add
 """
 
 code_gen_template = """
-Based on the following Opentrons workflow and deck state, generate Python code using the Opentrons API:
-
-{instructions}
+Based on the above Opentrons workflow and deck state, generate Python code using the Opentrons API.
 
 Ensure the code follows best practices for the Opentrons API, includes proper error handling, and is well-commented for clarity.
 
@@ -123,22 +121,13 @@ Output just the commented code without any explanations or additional text. The 
 """
 
 initial_processing_prompt = ChatPromptTemplate.from_messages([
-    ("system", initial_processing_template),
-    ("human", "{input}")
+    MessagesPlaceholder(variable_name="message_package"),
 ])
 
-# get_info_prompt = ChatPromptTemplate.from_messages([
-#     ("system", get_info_template),
-#     ("human", "Initial command:\n{initial_user_command}\n\nProcessed command:\n{processed_command}\n\nDefault config:\n{default_config}"),
-#     MessagesPlaceholder(variable_name="follow_up_messages"),
-# ])
-
 get_info_prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are a helpful lab automation assistant."),
     MessagesPlaceholder(variable_name="message_package"),
 ])
 
 code_gen_prompt = ChatPromptTemplate.from_messages([
-    ("system", code_gen_template),
-    ("human", "{instructions}")
+     MessagesPlaceholder(variable_name="message_package"),
 ])
