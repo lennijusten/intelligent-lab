@@ -6,7 +6,8 @@ import os
 
 from src.agent.graph import create_graph
 from src.agent.state import AgentState
-from langchain_core.messages import HumanMessage
+from src.agent.prompts import initial_processing_prompt, get_info_prompt, code_gen_prompt
+from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 def load_config(path: str) -> str:
@@ -31,7 +32,7 @@ def main():
         default_config = load_config(args.config)
         config_prompt = f"\n\nDefault Opentrons config:\n{default_config}"
     else:
-        default_config = "{}"
+        default_config = None
         config_prompt = "\n\nNo default Opentrons config provided."
 
     while True:

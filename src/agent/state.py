@@ -1,8 +1,9 @@
 from typing import List, TypedDict, Annotated
-from langchain_core.messages import BaseMessage
+from langchain_core.messages import BaseMessage, SystemMessage
 import operator
 
 class AgentState(TypedDict):
+    # TODO: make system_messages a dict with nodes as keys
     messages: Annotated[List[BaseMessage], operator.add]
     default_config: str
     processed_command: str

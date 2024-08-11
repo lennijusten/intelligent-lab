@@ -1,27 +1,28 @@
 from .state import AgentState
 from .models import initial_processing_chain, get_info_chain, code_gen_chain, code_gen_model
-from .prompts import code_gen_template
+from .prompts import initial_processing_template, get_info_template, code_gen_template
 from langchain_core.messages import AIMessage, SystemMessage, HumanMessage, ToolMessage
 
 def initial_processing_node(state: AgentState):
-    processed_command = initial_processing_chain.invoke({
+    processed_command = initial_processing_chain({
         "input": state["messages"][-1].content,
-        "default_config": state["default_config"]
     })
     return {
         "processed_command": processed_command.content,
-        "messages": state["messages"] + [AIMessage(content=processed_command.content)]
+        "messages": [AIMessage(content=processed_command.content)],
     }
 
 def get_info_node(state: AgentState):
-    initial_user_command = state["messages"][0].content if state["messages"] else ""
-    follow_up_messages = state["messages"][2:] if len(state["messages"]) > 2 else []
+    initial_processing_message = HumanMessage(initial_processing_template)
+    initial_user_message = state["messages"][0]
+    initial_ai_response = state["messages"][1] # response from initial_processing_node
+    get_info_message = HumanMessage(get_info_template)
+    follow_up_messages = state["messages"][2:]  # messages from the user and ai after the initial response
     
+    message_package = [initial_processing_message, initial_user_message, initial_ai_response, get_info_message,*follow_up_messages]
+
     result = get_info_chain.invoke({
-        "initial_user_command": initial_user_command,
-        "processed_command": state["processed_command"],
-        "default_config": state["default_config"],
-        "follow_up_messages": follow_up_messages
+        "message_package": message_package
     })
 
     if isinstance(result, AIMessage) and result.tool_calls:
@@ -45,12 +46,13 @@ def get_info_node(state: AgentState):
         print(f"\n================================== AI tool call ==================================\n{[msg.content for msg in tool_messages]}\n")
         return {"messages": state["messages"] + [result] + tool_messages, "awaiting_human_input": False}
     elif isinstance(result, (str, AIMessage)):
-        new_message = result if isinstance(result, AIMessage) else AIMessage(content=result)
-        print(f"\n================================== AI message ==================================\n{new_message.content}\n")
+        # new_message = result if isinstance(result, AIMessage) else AIMessage(content=result)
+        print(f"\n================================== AI message ==================================\n{result.content}\n")
         user_input = input("User (q/Q to quit): ")
         print(f"\n================================== Human message ==================================\n{user_input}\n")
+
         return {
-            "messages": state["messages"] + [new_message, HumanMessage(content=user_input)],
+            "messages": [AIMessage(result.content), HumanMessage(content=user_input)],
             "awaiting_human_input": False
         }
     else:

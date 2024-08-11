@@ -124,13 +124,18 @@ Output just the commented code without any explanations or additional text. The 
 
 initial_processing_prompt = ChatPromptTemplate.from_messages([
     ("system", initial_processing_template),
-    ("human", "{input}\n\nDefault Opentrons config:\n{default_config}")
+    ("human", "{input}")
 ])
 
+# get_info_prompt = ChatPromptTemplate.from_messages([
+#     ("system", get_info_template),
+#     ("human", "Initial command:\n{initial_user_command}\n\nProcessed command:\n{processed_command}\n\nDefault config:\n{default_config}"),
+#     MessagesPlaceholder(variable_name="follow_up_messages"),
+# ])
+
 get_info_prompt = ChatPromptTemplate.from_messages([
-    ("system", get_info_template),
-    ("human", "Initial command:\n{initial_user_command}\n\nProcessed command:\n{processed_command}\n\nDefault config:\n{default_config}"),
-    MessagesPlaceholder(variable_name="follow_up_messages"),
+    ("system", "You are a helpful lab automation assistant."),
+    MessagesPlaceholder(variable_name="message_package"),
 ])
 
 code_gen_prompt = ChatPromptTemplate.from_messages([
