@@ -5,8 +5,7 @@ from langchain_core.messages import AIMessage, SystemMessage, HumanMessage, Tool
 
 def initial_processing_node(state: AgentState):
     state["node_history"].append("initial_processing")
-
-    response = initial_processing_chain.invoke({"message_package": state["messages"]})
+    response = initial_processing_chain.invoke(state["messages"])
     return {"messages": [response]}
 
 def get_info_node(state: AgentState):
@@ -15,7 +14,7 @@ def get_info_node(state: AgentState):
     if state["node_history"].count("get_info") == 1:
         state["messages"].append(SystemMessage(get_info_template))
 
-    response = get_info_chain.invoke({"message_package": state["messages"]})
+    response = get_info_chain.invoke(state["messages"])
 
     if isinstance(response, AIMessage) and response.tool_calls:
         # If the content is empty, add a default message
@@ -57,7 +56,7 @@ def code_gen_node(state: AgentState):
     if state["node_history"].count("code_gen") == 1:
         state["messages"].append(HumanMessage(code_gen_template))
 
-    response = code_gen_chain.invoke({"message_package": state["messages"]})
+    response = code_gen_chain.invoke(state["messages"])
     print(f"\n================================== Current code ==================================\n{response.content}\n")
     return {
         "messages": [response],
@@ -79,7 +78,7 @@ def code_refinement_node(state: AgentState):
     
     print(f"\n================================== Human message ==================================\n{user_input}\n")
     
-    refined_code = code_gen_chain.invoke({"message_package": state["messages"]})
+    refined_code = code_gen_chain.invoke(state["messages"])
     print(f"\n================================== Current Code ==================================\n{refined_code.content}\n")
     
     return {

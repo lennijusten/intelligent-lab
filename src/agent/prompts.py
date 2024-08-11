@@ -119,15 +119,3 @@ Ensure the code follows best practices for the Opentrons API, includes proper er
 
 Output just the commented code without any explanations or additional text. The user should be able to copy and paste the code into their Python script and run it without any modifications.
 """
-
-initial_processing_prompt = ChatPromptTemplate.from_messages([
-    MessagesPlaceholder(variable_name="message_package"),
-])
-
-get_info_prompt = ChatPromptTemplate.from_messages([
-    MessagesPlaceholder(variable_name="message_package"),
-])
-
-code_gen_prompt = ChatPromptTemplate.from_messages([
-     MessagesPlaceholder(variable_name="message_package"),
-])
