@@ -4,8 +4,6 @@ import uuid
 from dotenv import load_dotenv
 
 from src.agent.graph import create_graph
-from src.agent.prompts import initial_processing_template
-from langchain_core.messages import HumanMessage, SystemMessage 
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 def load_config(path: str) -> str:
@@ -26,12 +24,7 @@ def main():
     config = {"configurable": {"thread_id": str(uuid.uuid4())}}
     
     # Load deck configuration
-    if args.config:
-        default_config = load_config(args.config)
-        config_prompt = f"\n\nDefault Opentrons config:\n{default_config}"
-    else:
-        default_config = None
-        config_prompt = "\n\nNo default Opentrons config provided."
+    default_config = load_config(args.config) if args.config else None
 
     while True:
         print("\nAI: Hello! I'm an intelligent liquid handling assistant. How can I help you today?\n")
@@ -42,7 +35,8 @@ def main():
             break
         
         initial_state = {
-            "messages": [SystemMessage(initial_processing_template), HumanMessage(user_input + config_prompt)],
+            "initial_user_message": user_input,
+            "messages": [],
             "node_history": [],
             "default_config": default_config,
             "awaiting_human_input": False,

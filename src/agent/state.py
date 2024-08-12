@@ -3,6 +3,7 @@ from langchain_core.messages import BaseMessage
 import operator
 
 class AgentState(TypedDict):
+    initial_user_message: str
     messages: Annotated[List[BaseMessage], operator.add]
     node_history: Annotated[List[str], operator.add]
     default_config: str
