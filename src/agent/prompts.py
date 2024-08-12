@@ -1,5 +1,3 @@
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
 initial_processing_template = """
 Analyze the user's Opentrons liquid handling command and provide a structured summary. Your response should be in YAML format with the following structure:
 
