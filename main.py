@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from src.agent.graph import create_graph
 from src.agent.prompts import initial_processing_template
-from langchain_core.messages import HumanMessage, AIMessage, ToolMessage, SystemMessage 
+from langchain_core.messages import HumanMessage, SystemMessage 
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 def load_config(path: str) -> str:
@@ -40,7 +40,7 @@ def main():
             # TODO: implement quitting at any time
             print("AI: Goodbye!")
             break
-
+        
         initial_state = {
             "messages": [SystemMessage(initial_processing_template), HumanMessage(user_input + config_prompt)],
             "node_history": [],
