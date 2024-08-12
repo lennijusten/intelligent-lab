@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from src.agent.graph import create_graph
 from src.agent.prompts import initial_processing_template
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, AIMessage, ToolMessage, SystemMessage 
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 def load_config(path: str) -> str:
@@ -37,31 +37,21 @@ def main():
         print("\nAI: Hello! I'm an intelligent liquid handling assistant. How can I help you today?\n")
         user_input = input("User (q/Q to quit): ")
         if user_input.lower() == 'q':
+            # TODO: implement quitting at any time
             print("AI: Goodbye!")
             break
 
         initial_state = {
             "messages": [SystemMessage(initial_processing_template), HumanMessage(user_input + config_prompt)],
+            "node_history": [],
             "default_config": default_config,
             "awaiting_human_input": False,
-            "get_info_calls": 0,
             "current_code": "",
             "code_to_run": ""
         }
 
-        for output in graph.stream(initial_state, config=config):
-            if "messages" in output:
-                output["messages"][-1].pretty_print()
-            
-            if output.get("awaiting_human_input", False):
-                break
-
-        if "code_to_run" in output:
-            print("\nFinal Approved Code:")
-            print(output["code_to_run"])
-        elif "current_code" in output:
-            print("\nCurrent Code (not yet approved):")
-            print(output["current_code"])
+        # stream the graph without handling intermediate outputs
+        list(graph.stream(initial_state, config=config))
 
         print("\nDone!")
         break

@@ -1,6 +1,6 @@
 from .state import AgentState
-from .models import initial_processing_chain, get_info_chain, code_gen_chain, code_gen_model
-from .prompts import initial_processing_template, get_info_template, code_gen_template
+from .models import initial_processing_chain, get_info_chain, code_gen_chain
+from .prompts import get_info_template, code_gen_template
 from langchain_core.messages import AIMessage, SystemMessage, HumanMessage, ToolMessage
 
 def initial_processing_node(state: AgentState):
@@ -37,7 +37,7 @@ def get_info_node(state: AgentState):
             name=tool_call['name']
         )
         
-        print(f"\n================================== AI tool call ==================================\n{tool_message.content}\n")
+        # print(f"\n================================== AI tool call ==================================\n{tool_message.content}\n")
         return {"messages": [response, tool_message], "awaiting_human_input": False}
     elif isinstance(response, AIMessage):
         print(f"\n================================== AI message ==================================\n{response.content}\n")
