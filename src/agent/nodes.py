@@ -40,7 +40,7 @@ def concept_finder_node(state: AgentState, name: str = "concept_finder") -> Dict
     state["messages"].append(HumanMessage(content=concept_finder_prompt, additional_kwargs={"node": name}))
 
     identified_concepts = find_concepts(state["messages"])
-    concept_info = get_concept_information(identified_concepts, "src/concepts")
+    concept_info = get_concept_information(identified_concepts, "src/opentrons/concepts")
 
     concept_summary = "Identified concepts and their information:\n"
     for concept, info in concept_info.items():
