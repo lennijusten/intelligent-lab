@@ -41,6 +41,8 @@ def main():
             "node_history": [],
             "default_config": default_config,
             "awaiting_human_input": False,
+            "identified_concepts": [],
+            "concept_info": {},
             "current_code": "",
             "code_to_run": ""
         }

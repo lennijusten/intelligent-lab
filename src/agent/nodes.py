@@ -1,8 +1,9 @@
 from typing import Dict, Any
 from .state import AgentState
 from .models import initial_processing_chain, get_info_chain, code_gen_chain
-from .prompts import initial_processing_template, get_info_template, code_gen_template
+from .prompts import initial_processing_template, concept_finder_template, get_info_template, code_gen_template
 from langchain_core.messages import AIMessage, SystemMessage, HumanMessage, ToolMessage
+from .concept_finder import find_concepts, get_concept_information, AVAILABLE_CONCEPTS
 
 def initial_processing_node(state: AgentState, name: str = "initial_processing") -> Dict[str, Any]:
     """
@@ -30,6 +31,28 @@ def initial_processing_node(state: AgentState, name: str = "initial_processing")
     response = initial_processing_chain.invoke(state["messages"])
     response.additional_kwargs["node"] = name
     return {"messages": [response]}
+
+def concept_finder_node(state: AgentState, name: str = "concept_finder") -> Dict[str, Any]:
+    state["node_history"].append(name)
+
+    # Add the concept finder template to the message history
+    concept_finder_prompt = concept_finder_template.format(available_concepts=", ".join(AVAILABLE_CONCEPTS))
+    state["messages"].append(HumanMessage(content=concept_finder_prompt, additional_kwargs={"node": name}))
+
+    identified_concepts = find_concepts(state["messages"])
+    concept_info = get_concept_information(identified_concepts, "src/concepts")
+
+    concept_summary = "Identified concepts and their information:\n"
+    for concept, info in concept_info.items():
+        concept_summary += f"- {concept}: {info}\n"
+
+    response = AIMessage(content=concept_summary, additional_kwargs={"node": name})
+
+    return {
+        "messages": [response],
+        "identified_concepts": identified_concepts,
+        "concept_info": concept_info
+    }
 
 def get_info_node(state: AgentState, name: str = "get_info") -> Dict[str, Any]:
     """

@@ -75,6 +75,16 @@ variables_to_specify:
 Provide a similar structured output for the given user input.
 """
 
+concept_finder_template = """
+You are a concept identifier for liquid handling robot commands. Given the message history, identify the relevant concepts from the following list:
+
+{available_concepts}
+
+Your task is to return a list of relevant concepts, choosing only from the provided list. Do not include any concepts that are not in this list.
+
+Relevant concepts:
+"""
+
 get_info_template = """
 Your task is to determine if more information is needed to execute the Opentrons liquid handling task. Review the rephrased command, task breakdown, required resources, variables to specify, default configuration, and conversation history.
 
