@@ -7,6 +7,7 @@ from src.agent.graph import create_graph
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 def load_config(path: str) -> str:
+    """Load and parse a JSON configuration file."""
     with open(path, 'r') as f:
         return json.dumps(json.load(f))  # Convert to JSON string
 

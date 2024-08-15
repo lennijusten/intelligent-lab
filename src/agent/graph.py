@@ -3,7 +3,16 @@ from langchain_core.messages import ToolMessage
 from .nodes import initial_processing_node, get_info_node, code_gen_node, code_refinement_node
 from .state import AgentState
 
-def create_graph():
+def create_graph() -> StateGraph:
+    """
+    Create and configure the StateGraph for the Agent.
+
+    This function sets up the nodes and edges of the graph, defining the
+    workflow for processing liquid handling tasks.
+
+    Returns:
+        StateGraph: The compiled graph ready for execution.
+    """
     workflow = StateGraph(AgentState)
 
     workflow.add_node("initial_processing", initial_processing_node)
