@@ -29,6 +29,7 @@ def main():
 
     while True:
         print("\nAI: Hello! I'm an intelligent liquid handling assistant. How can I help you today?\n")
+        print(f"\n{'=' * 34} Human message {'=' * 34}\n")
         user_input = input("User (q/Q to quit): ")
         if user_input.lower() == 'q':
             # TODO: implement quitting at any time
