@@ -7,6 +7,7 @@ from src.agent.graph import create_graph
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 def load_config(path: str) -> str:
+    """Load and parse a JSON configuration file."""
     with open(path, 'r') as f:
         return json.dumps(json.load(f))  # Convert to JSON string
 
@@ -28,6 +29,7 @@ def main():
 
     while True:
         print("\nAI: Hello! I'm an intelligent liquid handling assistant. How can I help you today?\n")
+        print(f"\n{'=' * 34} Human message {'=' * 34}\n")
         user_input = input("User (q/Q to quit): ")
         if user_input.lower() == 'q':
             # TODO: implement quitting at any time
@@ -40,6 +42,7 @@ def main():
             "node_history": [],
             "default_config": default_config,
             "awaiting_human_input": False,
+            "identified_concepts": [],
             "current_code": "",
             "code_to_run": ""
         }

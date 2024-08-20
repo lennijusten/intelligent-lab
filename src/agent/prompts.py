@@ -110,8 +110,16 @@ Avoid asking about:
 Remember, output ONLY the questions or the tool use instruction, without any additional explanation or analysis.
 """
 
+concept_finder_template = """
+You are a concept identifier for liquid handling robot commands. Given the message history, identify the relevant concepts from the following list:
+
+{available_concepts}
+
+Your task is to use the RelevantConcepts tool to return a list of relevant concepts, choosing only from the provided list. Do not include any concepts that are not in this list.
+"""
+
 code_gen_template = """
-Based on the above Opentrons workflow and deck state, generate Python code using the Opentrons API.
+Based on the above Opentrons workflow, deck state, and concept background, generate Python code using the Opentrons API.
 
 Ensure the code follows best practices for the Opentrons API, includes proper error handling, and is well-commented for clarity.
 
