@@ -91,6 +91,20 @@ def get_info_node(state: AgentState, name: str = "get_info") -> Dict[str, Any]:
         raise ValueError(f"Unexpected response type: {type(response)}")
     
 def concept_finder_node(state: AgentState, name: str = "concept_finder") -> Dict[str, Any]:
+    """
+    Concept finder node for the Agent.
+
+    This node identifies relevant concepts from a predefined list based on the current message history.
+    It utilizes a language model with a Pydantic RelevantConcepts tool to select applicable concepts.
+    For each identified concept, it retrieves and compiles associated information.
+
+    Args:
+        state (AgentState): The current state of the agent.
+        name (str, optional): The name of the node. Defaults to "concept_finder".
+
+    Returns:
+        Dict[str, Any]: Updated state information including identified concepts and their associated information.
+    """
     state["node_history"].append(name)
 
     concept_finder_prompt = concept_finder_template.format(available_concepts=", ".join(AVAILABLE_CONCEPTS))
