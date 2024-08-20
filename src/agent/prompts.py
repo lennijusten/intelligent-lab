@@ -86,21 +86,21 @@ Analyze the information for:
 
 If critical information is missing, formulate 1-3 clear, concise questions to gather this information from the user. Focus only on what's absolutely necessary for the protocol to run correctly.
 
-If all critical information is available, use the OpentronsInstructions tool to generate instructions.
+If all critical information is available, use the LiquidHandlerInstructions tool to generate instructions.
 
 Your response should be in one of these two formats:
 1. A list of questions, each on a new line, starting with "Q: ". For example:
    Q: What is the specific model of the 96-well plate?
    Q: What is the configuration of the thermocycler plate?
 
-2. Or, if all information is complete, use the OpentronsInstructions tool to structure the information. Here's how to use the tool:
+2. Or, if all information is complete, use the LiquidHandlerInstructions tool to structure the information. Here's how to use the tool:
 
 1. Only use the tool when you have gathered ALL necessary information for the task.
 2. Structure the information into 'workflow' and 'deck_state' as defined by the tool.
 3. For 'workflow', provide a list of discrete steps, each with an 'operation' and relevant parameters.
 4. For 'deck_state', include information about pipettes, labware, tip_racks, and modules.
 5. If any information is assumed or inferred, clearly state these assumptions before using the tool.
-6. Do not include any fields or structures not defined in the OpentronsInstructions tool.
+6. Do not include any fields or structures not defined in the LiquidHandlerInstructions tool.
 
 Avoid asking about:
 - Exact labware models unless crucial for the protocol
@@ -119,7 +119,7 @@ Your task is to use the RelevantConcepts tool to return a list of relevant conce
 """
 
 code_gen_template = """
-Based on the above Opentrons workflow, deck state, and concept background, generate Python code using the Opentrons API.
+Based on the above liquid handler workflow, deck state, and concept background, generate Python code using the Opentrons API.
 
 Ensure the code follows best practices for the Opentrons API, includes proper error handling, and is well-commented for clarity.
 
