@@ -1,9 +1,9 @@
 from typing import Dict, Any
 from .state import AgentState
-from .models import initial_processing_chain, get_info_chain, code_gen_chain
+from .models import initial_processing_chain, concept_finder_chain, get_info_chain, code_gen_chain
 from .prompts import initial_processing_template, concept_finder_template, get_info_template, code_gen_template
 from langchain_core.messages import AIMessage, SystemMessage, HumanMessage, ToolMessage
-from .concept_finder import find_concepts, get_concept_information, AVAILABLE_CONCEPTS
+from .concept_finder import get_concept_information, AVAILABLE_CONCEPTS
 
 def initial_processing_node(state: AgentState, name: str = "initial_processing") -> Dict[str, Any]:
     """
@@ -35,24 +35,50 @@ def initial_processing_node(state: AgentState, name: str = "initial_processing")
 def concept_finder_node(state: AgentState, name: str = "concept_finder") -> Dict[str, Any]:
     state["node_history"].append(name)
 
-    # Add the concept finder template to the message history
     concept_finder_prompt = concept_finder_template.format(available_concepts=", ".join(AVAILABLE_CONCEPTS))
     state["messages"].append(HumanMessage(content=concept_finder_prompt, additional_kwargs={"node": name}))
 
-    identified_concepts = find_concepts(state["messages"])
-    concept_info = get_concept_information(identified_concepts, "src/opentrons/concepts")
+    response = concept_finder_chain.invoke(state["messages"])
+    response.additional_kwargs["node"] = name
 
-    concept_summary = "Identified concepts and their information:\n"
-    for concept, info in concept_info.items():
-        concept_summary += f"- {concept}: {info}\n"
+    if isinstance(response, AIMessage) and response.tool_calls:
+        # If the content is empty, add a default message
+        if not response.content:
+            response.content = "Using the RelevantConcepts tool to list concept keywords."
+        
+        # Handle tool calls
+        if len(response.tool_calls) > 1:
+            raise ValueError("Expected only one tool call, but got multiple.")
+            
+        tool_call = response.tool_calls[0]
+        if tool_call['name'] == 'RelevantConcepts':
+            
+            tool_message = ToolMessage(
+                # todo: may be better way to convert tool_call to ToolMessage
+                content=str(tool_call['args']),
+                tool_call_id=tool_call['id'],
+                name=tool_call['name'],
+                additional_kwargs = {"node": name}
+            )
+            
+            identified_concepts = tool_call['args']['concepts']
+            concept_info = get_concept_information(identified_concepts, "src/opentrons/concepts")
 
-    response = AIMessage(content=concept_summary, additional_kwargs={"node": name})
+            concept_summary = "Identified concepts and their information:\n"
+            for _, info in concept_info.items():
+                concept_summary += f"{info}\n"
 
-    return {
-        "messages": [response],
-        "identified_concepts": identified_concepts,
-        "concept_info": concept_info
-    }
+            concept_message = AIMessage(content=concept_summary, additional_kwargs={"node": name})
+
+            print(f"\n{'=' * 34} AI tool call {'=' * 34}\n{tool_message.content}\n")
+            return {
+                "messages": [response, tool_message, concept_message],
+                "identified_concepts": identified_concepts,
+            }
+        else:
+            raise ValueError(f"Unexpected tool call: {tool_call['name']}. Expected 'RelevantConcepts'.")
+    else:
+        raise ValueError("Model did not use the tool as instructed")
 
 def get_info_node(state: AgentState, name: str = "get_info") -> Dict[str, Any]:
     """

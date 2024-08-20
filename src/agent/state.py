@@ -14,5 +14,6 @@ class AgentState(TypedDict):
     node_history: Annotated[List[str], operator.add]
     default_config: str
     awaiting_human_input: bool
+    identified_concepts: List[str]
     current_code: str
     code_to_run: str

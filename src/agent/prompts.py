@@ -80,9 +80,7 @@ You are a concept identifier for liquid handling robot commands. Given the messa
 
 {available_concepts}
 
-Your task is to return a list of relevant concepts, choosing only from the provided list. Do not include any concepts that are not in this list.
-
-Relevant concepts:
+Your task is to use the RelevantConcepts tool to return a list of relevant concepts, choosing only from the provided list. Do not include any concepts that are not in this list.
 """
 
 get_info_template = """
