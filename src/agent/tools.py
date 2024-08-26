@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any, Optional
+from typing import List, Dict
 
 class DeckState(BaseModel):
     pipettes: Dict[str, str] = Field(default_factory=dict, description="Pipettes attached to the robot")
