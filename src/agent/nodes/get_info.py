@@ -26,15 +26,13 @@ def get_info_node(state: AgentState, name: str = "get_info") -> Dict[str, Any]:
     response = get_info_chain.invoke(state["messages"])
     response.additional_kwargs["node"] = name
 
-    if isinstance(response, AIMessage) and response.tool_calls:
-        # If the content is empty, add a default message
-        if not response.content:
-            response.content = "Using the LiquidHandlerInstructions tool to generate the protocol."
-            
+    if isinstance(response, AIMessage) and response.tool_calls:            
         tool_call = response.tool_calls[0]
 
-        if tool_call['name'] != 'LiquidHandlerInstructions':
-            raise ValueError(f"Unexpected tool call name: {tool_call['name']}. Expected 'LiquidHandlerInstructions'.")
+        if tool_call['name'] == 'UpdateDeckState':
+            response.content = "Using UpdateDeckState."
+        else:
+            raise ValueError(f"Unexpected tool call: {tool_call['name']}")
 
         tool_message = ToolMessage(
             # todo: may be better way to convert tool_call to ToolMessage

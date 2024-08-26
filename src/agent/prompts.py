@@ -76,7 +76,7 @@ Provide a similar structured output for the given user input.
 """
 
 get_info_template = """
-Your task is to determine if more information is needed to execute the Opentrons liquid handling task. Review the rephrased command, task breakdown, required resources, variables to specify, default configuration, and conversation history.
+Your task is to determine if more information is needed to execute the liquid handling task. Review the user command, task breakdown, required resources, variables to specify, default configuration, and conversation history.
 
 Analyze the information for:
 - Missing required resources
@@ -84,30 +84,30 @@ Analyze the information for:
 - Compatibility issues between specified labware and pipettes
 - Any crucial information gaps that could prevent the protocol from running
 
-If critical information is missing, formulate 1-3 clear, concise questions to gather this information from the user. Focus only on what's absolutely necessary for the protocol to run correctly.
+If critical information is missing as few clear, concise questions to gather this information from the user. Focus only on what's absolutely necessary for the protocol to run correctly.
 
-If all critical information is available, use the LiquidHandlerInstructions tool to generate instructions.
+If all critical information is available, use the UpdateDeckState tool to structure the deck information, and then use the InfoComplete tool to indicate that all information has been gathered.
 
 Your response should be in one of these two formats:
 1. A list of questions, each on a new line, starting with "Q: ". For example:
-   Q: What is the specific model of the 96-well plate?
-   Q: What is the configuration of the thermocycler plate?
+   Q: What is the location and type of tip rack available?
+   Q: What is the volume of liquid that should be transferred?
 
-2. Or, if all information is complete, use the LiquidHandlerInstructions tool to structure the information. Here's how to use the tool:
+2. Or, if all information is complete:
+   a. Use the UpdateDeckState tool to structure the deck information.
+   b. Then use the InfoComplete tool to indicate that all information has been gathered.
 
+When using the UpdateDeckState tool:
 1. Only use the tool when you have gathered ALL necessary information for the task.
-2. Structure the information into 'workflow' and 'deck_state' as defined by the tool.
-3. For 'workflow', provide a list of discrete steps, each with an 'operation' and relevant parameters.
-4. For 'deck_state', include information about pipettes, labware, tip_racks, and modules.
-5. If any information is assumed or inferred, clearly state these assumptions before using the tool.
-6. Do not include any fields or structures not defined in the LiquidHandlerInstructions tool.
+2. Include information about pipettes, labware, tip_racks, and modules in the deck_state.
+3. If any information is assumed or inferred, clearly state these assumptions before using the tool.
 
 Avoid asking about:
 - Exact labware models unless crucial for the protocol
 - Minor details that can be assumed based on standard laboratory practices
 - Information already provided in the default configuration unless there's a clear conflict
 
-Remember, output ONLY the questions or the tool use instruction, without any additional explanation or analysis.
+Remember, your response MUST be either questions for the user or a tool use following the above instructions. Do not add any additional explanation or analysis.
 """
 
 concept_finder_template = """
