@@ -1,6 +1,6 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import RunnablePassthrough
-from .tools import RelevantConcepts, UpdateDeckState, GetInfoResponse
+from .tools import RelevantConcepts, GetInfoResponse
 
 initial_processing_model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 initial_processing_chain = RunnablePassthrough() | initial_processing_model
