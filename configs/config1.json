@@ -4,6 +4,8 @@
         "right": "p10_single"
     },
     "labware": {
+        "default_96_well_plate": "corning_96_wellplate_360ul_flat",
+        "default_96_well_plate_for_thermocycler": "nest_96_wellplate_100ul_pcr_full_skirt"
     },
     "tip_racks": {
     },

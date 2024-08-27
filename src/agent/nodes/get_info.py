@@ -26,35 +26,35 @@ def get_info_node(state: AgentState, name: str = "get_info") -> Dict[str, Any]:
     response = get_info_chain.invoke(state["messages"])
     response.additional_kwargs["node"] = name
 
-    if isinstance(response, AIMessage) and response.tool_calls:
-        # If the content is empty, add a default message
-        if not response.content:
-            response.content = "Using the LiquidHandlerInstructions tool to generate the protocol."
-            
-        tool_call = response.tool_calls[0]
+    if not response.tool_calls:
+        raise Warning(f"Expected tool call in response but got {response}")
 
-        if tool_call['name'] != 'LiquidHandlerInstructions':
-            raise ValueError(f"Unexpected tool call name: {tool_call['name']}. Expected 'LiquidHandlerInstructions'.")
+    tool_call = response.tool_calls[0]
+    tool_message = ToolMessage(
+        content=str(tool_call['args']),
+        tool_call_id=tool_call['id'],
+        name=tool_call['name'],
+        additional_kwargs={"node": name}
+    )
+    print(f"\n{'=' * 34} AI tool call {'=' * 34}\n{tool_message.content}\n")
 
-        tool_message = ToolMessage(
-            # todo: may be better way to convert tool_call to ToolMessage
-            content=str(tool_call['args']),
-            tool_call_id=tool_call['id'],
-            name=tool_call['name'],
-            additional_kwargs = {"node": name}
-            )
-        
-        print(f"\n{'=' * 34} AI tool call {'=' * 34}\n{tool_message.content}\n")
-        return {"messages": [response, tool_message], "awaiting_human_input": False}
-    elif isinstance(response, AIMessage):
-        # TODO implement check for failed tool calls where the model outputs string version of tool call
-        print(f"\n{'=' * 34} AI message {'=' * 34}\n{response.content}\n")
-        print(f"\n{'=' * 34} Human message {'=' * 34}\n")
-        user_input = input("User (q/Q to quit): ")
-
-        return {
-            "messages": [response, HumanMessage(content=user_input, additional_kwargs={"node": name})], 
-            "awaiting_human_input": False,
-        }
+    tool_output = tool_call["args"]
+    state["deck_state"] = tool_output["deck_state"]
+    
+    if tool_output["info_complete"]:
+        print(f"\n{'=' * 34} AI message {'=' * 34}\nAll necessary information has been gathered.\n")
+        return {"messages": [response, tool_message], "info_gathering_complete": True}
     else:
-        raise ValueError(f"Unexpected response type: {type(response)}")
+        if tool_output["questions"]:
+            print(f"\n{'=' * 34} AI message {'=' * 34}\n{tool_output['questions']}\n")
+            print(f"\n{'=' * 34} Human message {'=' * 34}\n")
+            user_input = input("User (q/Q to quit): ")
+
+            if user_input.lower() == 'q':
+                raise KeyboardInterrupt("User requested to quit.")
+            
+            return {"messages": [response, tool_message, HumanMessage(content=user_input, additional_kwargs={"node": name})]}
+        else:
+            raise Warning("Model responded info_complete=False but no questions were generated for the user.")
+            return {"messages": [response, tool_message]}
+        

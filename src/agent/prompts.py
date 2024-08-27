@@ -76,38 +76,56 @@ Provide a similar structured output for the given user input.
 """
 
 get_info_template = """
-Your task is to determine if more information is needed to execute the Opentrons liquid handling task. Review the rephrased command, task breakdown, required resources, variables to specify, default configuration, and conversation history.
+Your task is to gather and validate information needed to execute a liquid handling task using the Opentrons robot. Analyze the user command, task breakdown, required resources, variables to specify, default configuration, and conversation history.
 
-Analyze the information for:
-- Missing required resources
-- Unspecified critical variables (e.g., volumes, labware locations, pipette types and positions)
-- Compatibility issues between specified labware and pipettes
-- Any crucial information gaps that could prevent the protocol from running
+After each analysis, you MUST use the GetInfoResponse tool to update the current state. This tool takes three parameters:
 
-If critical information is missing, formulate 1-3 clear, concise questions to gather this information from the user. Focus only on what's absolutely necessary for the protocol to run correctly.
+1. deck_state: The current known configuration of the robot's deck, including pipettes, labware, tip racks, and modules.
+2. info_complete: A boolean indicating whether all necessary information has been gathered (True) or if more information is needed (False).
+3. questions: A string containing questions for the user if more information is needed, or an empty string if no questions are necessary.
 
-If all critical information is available, use the LiquidHandlerInstructions tool to generate instructions.
+Guidelines for your analysis:
+1. Review the information for:
+   - Missing required resources
+   - Unspecified critical variables (e.g., volumes, labware locations, pipette types and positions)
+   - Compatibility issues between specified labware and pipettes
+   - Any crucial information gaps that could prevent the protocol from running
 
-Your response should be in one of these two formats:
-1. A list of questions, each on a new line, starting with "Q: ". For example:
-   Q: What is the specific model of the 96-well plate?
-   Q: What is the configuration of the thermocycler plate?
+2. If information is missing:
+   - Set info_complete to False
+   - Generate clear, concise questions to gather the missing information
+   - Include these questions in the 'questions' parameter of the GetInfoResponse tool
+   - Update the deck_state with any partial information you have
 
-2. Or, if all information is complete, use the LiquidHandlerInstructions tool to structure the information. Here's how to use the tool:
+3. If all critical information is available:
+   - Set info_complete to True
+   - Leave the 'questions' parameter empty
+   - Update the deck_state with all the gathered information
 
-1. Only use the tool when you have gathered ALL necessary information for the task.
-2. Structure the information into 'workflow' and 'deck_state' as defined by the tool.
-3. For 'workflow', provide a list of discrete steps, each with an 'operation' and relevant parameters.
-4. For 'deck_state', include information about pipettes, labware, tip_racks, and modules.
-5. If any information is assumed or inferred, clearly state these assumptions before using the tool.
-6. Do not include any fields or structures not defined in the LiquidHandlerInstructions tool.
+4. When updating the deck_state:
+   - Include information about pipettes, labware, tip_racks, and modules
+   - If any information is assumed or inferred, clearly state these assumptions
 
-Avoid asking about:
-- Exact labware models unless crucial for the protocol
-- Minor details that can be assumed based on standard laboratory practices
-- Information already provided in the default configuration unless there's a clear conflict
+5. Avoid asking about:
+   - Exact labware models unless crucial for the protocol
+   - Minor details that can be assumed based on standard laboratory practices
+   - Information already provided in the default configuration unless there's a clear conflict
 
-Remember, output ONLY the questions or the tool use instruction, without any additional explanation or analysis.
+Always use the GetInfoResponse tool at the end of your analysis, regardless of whether more information is needed or not. This ensures the current state is always updated and tracked.
+
+Example tool usage:
+{
+  "deck_state": {
+    "pipettes": {"left": "p300_single", "right": "p20_multi_gen2"},
+    "labware": {"1": "corning_96_wellplate_360ul_flat", "2": "opentrons_24_tuberack_eppendorf_1.5ml_safelock_snapcap"},
+    "tip_racks": {"3": "opentrons_96_tiprack_300ul"},
+    "modules": {}
+  },
+  "info_complete": false,
+  "questions": "Q: What volume of liquid should be transferred from the tube rack to the well plate?\nQ: Which specific wells in the 96-well plate should receive the liquid?"
+}
+
+Remember, your response MUST always end with the use of the GetInfoResponse tool. Do not add any additional explanation or analysis outside of the tool use.
 """
 
 concept_finder_template = """
