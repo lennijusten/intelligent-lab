@@ -25,13 +25,13 @@ def create_graph() -> StateGraph:
     workflow.add_edge("initial_processing", "get_info")
     workflow.add_conditional_edges(
         "get_info",
-        lambda x: "concept_finder" if any(isinstance(m, ToolMessage) for m in x["messages"]) else "get_info"
+        lambda x: "concept_finder" if x["info_gathering_complete"] else "get_info"
     )
     workflow.add_edge("concept_finder", "code_gen")
     workflow.add_edge("code_gen", "code_refinement")
     workflow.add_conditional_edges(
         "code_refinement",
-        lambda x: "code_refinement" if x["awaiting_human_input"] else END
+        lambda x: END if x["code_refining_complete"] else "code_refinement"
     )
 
     return workflow.compile()

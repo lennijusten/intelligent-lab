@@ -41,7 +41,14 @@ def main():
             "messages": [],
             "node_history": [],
             "default_config": default_config,
-            "awaiting_human_input": False,
+            "deck_state": {
+                "pipettes": {},
+                "labware": {},
+                "tip_racks": {},
+                "modules": {}
+            },
+            "info_gathering_complete": False,
+            "code_refining_complete": False,
             "identified_concepts": [],
             "current_code": "",
             "code_to_run": ""

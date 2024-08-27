@@ -10,6 +10,7 @@ class DeckState(BaseModel):
 class RelevantConcepts(BaseModel):
     concepts: List[str] = Field(default_factory=list, description="A list of relevant concepts to complete the user command")
 
-class UpdateDeckState(BaseModel):
-    """Update the current deck state based on the information gathered."""
+class GetInfoResponse(BaseModel):
     deck_state: DeckState
+    info_complete: bool
+    questions: str

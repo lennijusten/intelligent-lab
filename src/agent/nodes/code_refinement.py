@@ -24,7 +24,7 @@ def code_refinement_node(state: AgentState, name: str = "code_refinement") -> Di
     if user_input.upper() == 'Y':
         return {
             "messages": state["messages"],
-            "awaiting_human_input": False,
+            "code_refining_complete": True,
             "code_to_run": state["current_code"]  # Store the approved code
         }
     
@@ -36,6 +36,5 @@ def code_refinement_node(state: AgentState, name: str = "code_refinement") -> Di
     
     return {
         "messages": [HumanMessage(content=user_input, additional_kwargs={"node": name}), refined_code],
-        "awaiting_human_input": True,
         "current_code": refined_code.content
     }

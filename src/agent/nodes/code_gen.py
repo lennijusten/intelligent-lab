@@ -25,8 +25,4 @@ def code_gen_node(state: AgentState, name: str = "code_gen") -> Dict[str, Any]:
     response = code_gen_chain.invoke(state["messages"])
     response.additional_kwargs["node"] = name
     print(f"\n{'=' * 34} Current code {'=' * 34}\n{response.content}\n")
-    return {
-        "messages": [response],
-        "awaiting_human_input": True,
-        "current_code": response.content
-        }
+    return {"messages": [response], "current_code": response.content}
