@@ -6,3 +6,4 @@ intelligent-lab-venv/
 create_code_summary.py
 files_to_include.txt
 notebooks/pylabrobot/*.log
+venv
