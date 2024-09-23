@@ -1,0 +1,14 @@
+{
+    "pipettes": {
+    },
+    "labware": {
+        "default_tip_carrier": "TIP_CAR_480_A00",
+        "default_plate_carrier": "PLT_CAR_L5AC_A00",
+        "default_wells": "Cor_96_wellplate_360ul_Fb",
+        "default_tips": "HTF_L"
+    },
+    "tip_racks": {
+    },
+    "modules": {
+    }
+}
