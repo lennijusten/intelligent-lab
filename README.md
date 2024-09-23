@@ -9,7 +9,7 @@ An AI-powered assistant for controlling liquid handling robots through natural l
 git clone https://github.com/lennijusten/intelligent-lab.git
 cd intelligent-lab
 ```
-2. Create and activate a virtual environment:
+2. Create and activate a virtual environment (optional but recommended):
 ```
 python -m venv venv
 source venv/bin/activate
