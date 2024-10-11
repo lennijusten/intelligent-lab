@@ -7,14 +7,14 @@ DeckState:
   pipettes:
     right:
       type: p300_single_gen2
-      current_volume: 0
-    left: null  
+      current_volume: 20  # Volume after moving 20 uL
+    left: null  # Assuming there's no left pipette
 
   labware:
     slot1:
       type: corning_96_wellplate_360ul_flat
       wells:
-        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row A
+        - [20, null, null, null, null, null, null, null, null, null, null, null]  # Row A, well 1A contains 20 uL
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row B
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row C
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row D
@@ -26,7 +26,7 @@ DeckState:
     slot2:
       type: corning_96_wellplate_360ul_flat
       wells:
-        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row A
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row A, well 1A is empty
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row B
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row C
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row D
@@ -38,7 +38,7 @@ DeckState:
     slot3:
       type: opentrons_96_tiprack_300ul
       tips:
-        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row A
+        - [true, null, null, null, null, null, null, null, null, null, null, null]  # Row A, well 1A has been used (true indicates it's been used)
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row B
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row C
         - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row D
