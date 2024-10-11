@@ -2,6 +2,7 @@
 Please write a very simple python script for Opentrons that moves 20 uL of liquid from well 1A of a corning 96 well plate in deck slot 1 to well 1A of a corning 96 well plate in deck slot 2 using a 300 uL pipette tip mounted on the right side. 300 uL tips are in deck slot 3. 
 
 # 2. Expected final deck state
+```yaml
 DeckState:
   pipettes:
     right:
@@ -55,3 +56,4 @@ DeckState:
     slot10: null
     slot11: null
     slot12: null
+```
