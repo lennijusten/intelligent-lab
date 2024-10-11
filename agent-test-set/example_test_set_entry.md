@@ -3,13 +3,55 @@ Please write a very simple python script for Opentrons that moves 20 uL of liqui
 
 # 2. Expected final deck state
 DeckState:
-    pipettes: 
-        right: p300_single_gen2
-    labware:
-        slot1: corning_96_wellplate_360ul_flat
-        slot2: corning_96_wellplate_360ul_flat
-            1A: +20 uL
-        slot3: opentrons_96_tiprack_300ul
-    
+  pipettes:
+    right:
+      type: p300_single_gen2
+      current_volume: 0
+    left: null  
 
+  labware:
+    slot1:
+      type: corning_96_wellplate_360ul_flat
+      wells:
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row A
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row B
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row C
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row D
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row E
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row F
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row G
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row H
 
+    slot2:
+      type: corning_96_wellplate_360ul_flat
+      wells:
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row A
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row B
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row C
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row D
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row E
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row F
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row G
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row H
+
+    slot3:
+      type: opentrons_96_tiprack_300ul
+      tips:
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row A
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row B
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row C
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row D
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row E
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row F
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row G
+        - [null, null, null, null, null, null, null, null, null, null, null, null]  # Row H
+
+    slot4: null
+    slot5: null
+    slot6: null
+    slot7: null
+    slot8: null
+    slot9: null
+    slot10: null
+    slot11: null
+    slot12: null
