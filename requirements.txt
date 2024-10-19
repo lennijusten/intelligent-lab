@@ -6,6 +6,7 @@ langchain_chroma
 langchain_experimental
 langchainhub
 langgraph
+langgraph-checkpoint-sqlite
 pypdf
 PyPDF2
 bs4
