@@ -10,3 +10,4 @@ pypdf
 PyPDF2
 bs4
 faiss-cpu
+opentrons
