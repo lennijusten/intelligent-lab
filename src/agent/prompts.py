@@ -117,8 +117,8 @@ Example tool usage:
 {
   "deck_state": {
     "pipettes": {"left": "p300_single", "right": "p20_multi_gen2"},
-    "labware": {"1": "corning_96_wellplate_360ul_flat", "2": "PyLabRobot_24_tuberack_eppendorf_1.5ml_safelock_snapcap"},
-    "tip_racks": {"3": "PyLabRobot_96_tiprack_300ul"},
+    "labware": {"1": "corning_96_wellplate_360ul_flat", "2": "opentrons_24_tuberack_eppendorf_1.5ml_safelock_snapcap"},
+    "tip_racks": {"3": "opentrons_96_tiprack_300ul"},
     "modules": {}
   },
   "info_complete": false,
