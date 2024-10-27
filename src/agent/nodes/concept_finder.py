@@ -7,7 +7,7 @@ from ..prompts import concept_finder_template
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 
 AVAILABLE_CONCEPTS = [
-    "thermocycler_module", "temperature_controller_module", "transfer", "blow_out", "discard_tip"
+    "plate_reading", "centrifuge", "transfer", "blow_out", "discard_tip" # instead, add a node that retrieves the different robots being used, this will narrow down AVAILABLE_CONCEPTS
 ]
 
 def load_concept_content(concept: str, concepts_dir: str) -> str:
@@ -60,7 +60,7 @@ def concept_finder_node(state: AgentState, name: str = "concept_finder") -> Dict
             )
             
             identified_concepts = tool_call['args']['concepts']
-            concept_info = get_concept_information(identified_concepts, "src/opentrons/concepts")
+            concept_info = get_concept_information(identified_concepts, "src/plr/concepts")
 
             concept_summary = "Identified concepts and their information:\n"
             for _, info in concept_info.items():
