@@ -16,7 +16,7 @@ def main():
     load_dotenv()
     
     # Set up argument parser
-    parser = argparse.ArgumentParser(description="Opentrons Agent")
+    parser = argparse.ArgumentParser(description="PyLabRobot Agent")
     parser.add_argument("--config", type=str, help="Path to the deck configuration file")
     args = parser.parse_args()
 

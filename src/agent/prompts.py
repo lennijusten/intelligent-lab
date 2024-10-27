@@ -1,5 +1,5 @@
 initial_processing_template = """
-Analyze the user's Opentrons liquid handling command and provide a structured summary. Your response should be in YAML format with the following structure:
+Analyze the user's PyLabRobot liquid handling command and provide a structured summary. Your response should be in YAML format with the following structure:
 
 command: "A clear, specific restatement of the user's command"
 task_breakdown:
@@ -16,7 +16,7 @@ variables_to_specify:
   - "Variable 2: ..."
   - ...
 
-Focus on identifying all necessary components and variables crucial for task execution. Use Opentrons-specific language in the task breakdown. Only include variables that are critical and not specified in the original command.
+Focus on identifying all necessary components and variables crucial for task execution. Use PyLabRobot-specific language in the task breakdown. Only include variables that are critical and not specified in the original command.
 
 Examples:
 
@@ -76,7 +76,7 @@ Provide a similar structured output for the given user input.
 """
 
 get_info_template = """
-Your task is to gather and validate information needed to execute a liquid handling task using the Opentrons robot. Analyze the user command, task breakdown, required resources, variables to specify, default configuration, and conversation history.
+Your task is to gather and validate information needed to execute a liquid handling task using the PyLabRobot robot. Analyze the user command, task breakdown, required resources, variables to specify, default configuration, and conversation history.
 
 After each analysis, you MUST use the GetInfoResponse tool to update the current state. This tool takes three parameters:
 
@@ -117,8 +117,8 @@ Example tool usage:
 {
   "deck_state": {
     "pipettes": {"left": "p300_single", "right": "p20_multi_gen2"},
-    "labware": {"1": "corning_96_wellplate_360ul_flat", "2": "opentrons_24_tuberack_eppendorf_1.5ml_safelock_snapcap"},
-    "tip_racks": {"3": "opentrons_96_tiprack_300ul"},
+    "labware": {"1": "corning_96_wellplate_360ul_flat", "2": "PyLabRobot_24_tuberack_eppendorf_1.5ml_safelock_snapcap"},
+    "tip_racks": {"3": "PyLabRobot_96_tiprack_300ul"},
     "modules": {}
   },
   "info_complete": false,
@@ -137,9 +137,9 @@ Your task is to use the RelevantConcepts tool to return a list of relevant conce
 """
 
 code_gen_template = """
-Based on the above liquid handler workflow, deck state, and concept background, generate Python code using the Opentrons API.
+Based on the above liquid handler workflow, deck state, and concept background, generate Python code using the PyLabRobot API.
 
-Ensure the code follows best practices for the Opentrons API, includes proper error handling, and is well-commented for clarity.
+Ensure the code follows best practices for the PyLabRobot API, includes proper error handling, and is well-commented for clarity.
 
 Output just the commented code without any explanations or additional text. The user should be able to copy and paste the code into their Python script and run it without any modifications.
 """

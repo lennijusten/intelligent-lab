@@ -21,9 +21,9 @@ def initial_processing_node(state: AgentState, name: str = "initial_processing")
     state["node_history"].append(name)
 
     if state["default_config"]:
-        config_prompt = f"\n\nDefault Opentrons config:\n{state['default_config']}"
+        config_prompt = f"\n\nDefault PyLabRobot config:\n{state['default_config']}"
     else:
-        config_prompt = "\n\nNo default Opentrons config provided."
+        config_prompt = "\n\nNo default PyLabRobot config provided."
 
     state["messages"].extend(
         [SystemMessage(initial_processing_template, additional_kwargs={"node": name}), 
